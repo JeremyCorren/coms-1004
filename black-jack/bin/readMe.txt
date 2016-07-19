@@ -1,0 +1,33 @@
+jdc2189_project4 readMe.txt
+****************************
+
+	The BlackJack program simulates a basic game of Blackjack, one that involves only one player and one dealer.
+
+Deck.java
+
+	The Deck class creates a deck of cards and a set of methods that operate on the deck. In the constructor, I created a 52-element array of type Card. I call a method initializeDeck() in which each of 4 for-loops, one for each suit of the deck, create 13 Card objects with a specific rank and a given suit. The draw() method increments the variable cardsDrawn, which tracks the number of cards taken from the top of the deck as they are returned. The shuffle() method runs a for-loop that performs a simple exchange algorithm: each element position with a randomly generated position, thus producing a randomized deck of cards. The toString() method creates a string deckInfo that concatenates 52 descriptor strings for each value in the deck, corresponding to the toString() method in the Card class.
+
+Player.java
+
+	The Player class deals primarily with the player’s hand and his/her total (stored in variable handTotal). The receiveHand() method receives an implicit argument of type Card, passed from the draw() method in the Deck class through a method dealHands() in class Game. The getHand() method returns the player’s hand as an ArrayList. The hit() method adds a card to the player’s hand, using the same mechanism receiveHand() uses to get its cards from Deck and through Game.
+	The total() method runs a for-loop that adds the corresponding value of each card in the player’s hand to a variable handTotal using a getValue() method from the Card class. If the value obtained is above 10, and thus either a king, a queen, or a jack, the value added to the total is 10 (in accordance with Blackjack rules). If the value obtained is a 1, and thus an ace, a boolean acePresent is used to keep track of aces--for now the ace is treated as a 1. 
+	At the end of the method, if the total is less than or equal to 11, 10 is added to the handTotal to account for the ace, which in this case is interpreted as 11. The getTotal() method returns handTotal, while resetTotal() sets handTotal to 0 and discardHand() clears the ArrayList hand.
+
+Dealer.java
+
+	The Dealer class is structurally and functionally almost identical to the Player class, with the exception that it contains a method revealFirst() that shows the player the dealer’s first card at the beginning of the round (before the player decides to hit or stand).
+
+BlackJack.java
+
+	The tester class creates an object blackjack of type Game. It invokes the method play() on blackjack, which initiates a round.
+
+Game.java
+
+	The game class manages the flow of control, in terms of the events of the Blackjack game. In the constructor, I created objects of types Deck, Player, and Dealer, which will function as implicit parameters for method calls over the course of program execution. The boolean again is used to reauthorize certain methods during subsequent rounds (if the player chooses the ‘play again’ option). Variables playerCounter and dealerCounter keep track of the number of times player or dealer hits. 
+	The BlackJack tester class calls the play() class, beginning the game. First a Deck object is created and shuffled. In the case that any previous rounds have been played, a call to the clearHands() method results in the subsequent calling of method discardHand() on both player and dealer, meaning that their hand ArrayLists are empty. After printing the text interface, I call both a dealHands() and a printHands() method, which fill the player’s and dealer’s hand ArrayLists with 2 initial cards each by way of the draw() method from Deck and then print them (only one of the dealer’s cards is revealed, the other kept hidden).
+	A method checkBlackJack() is called to determine whether the player’s initial hand is a blackjack. If it is, the dealer’s hand and score are revealed and the whoWins() method is called. The whoWins() method will be called subsequently when, after various hits from player and dealer, their respective hands are evaluated. 
+	In the whoWins() method, the player and dealer totals are printed and two methods are called, each containing a different set of conditional statements that determine the winner of a round. The compareWhenBlackJackPresent() conditionals check for whether at least one the parties got Blackjack, or if both did. The compareWhenBlackJackPresent() conditionals compare composite scores following multiple hits from either or both of the player and dealer. The conditionals from both sets in turn call either the push() method, which represents a tie, or the youWin() or youLose() methods. All three of them eventually call playAgain(), which asks the user for input to determine whether another round will take place.
+	If the checkBlackJack() method does not apply in a certain case, the hitOrStand() method is called. The user is asked to submit input to determine whether he/she will hit or stand. In the case of a hit, the hit() method is called on player; his/her hand is totaled, printed, and the playerCounter variable is incremented to keep track of the hits. At the end of this block, a call to checkPlayer() uses conditionals to check whether the player busts, gets a ‘composite 21’ (from hitting, not a ‘natural 21’ from the initial hand), or if the player should be offered the option to hit or stand again.
+	Alternately, in the hitOrStand() method, if the user chooses to stand, the dealer’s hand and total are printed, and then evaluateDealer() is called.
+	The evaluateDealer() method checks to see if the dealer’s initial hand yields a blackjack — if so, whoWins(); is called to compare scores. If there is no blackjack, dealerHitCheck() is called, which runs a while-loop in which the dealer continuously hits so long as his hand total is under 17. Returning to evaluateDealer(), a set of conditional checks is run: if the dealer is greater than 17 and under 21, he stands, and whoWins() is called; if he reaches 21 after hitting, whoWins() is called, and if he busts, youWin() is called.
+	Generally, either after the initial hands, or after individual hits, conditional statements call either whoWins() to determine the score, or directly call push(), youWin(), or youLose() to determine the victor of each round. After these penultimate methods, the playAgain() method prompts the user to submit input relating his/her decision to either play again or quit.
