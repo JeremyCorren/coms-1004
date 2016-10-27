@@ -1,9 +1,10 @@
-# coms-1004
-programming projects in intro to computer science and programming in java 
+## coms-1004
 
-Contents
-- drunkard
-- credit-card
-- bulls-and-cows
-- black-jack
-- effects
+Programming projects for COMS W1004: Intro to Computer Science and Programming in Java 
+
+
+- Drunkard
+- CreditCard
+- BullsAndCows
+- BlackJack
+- Effects
